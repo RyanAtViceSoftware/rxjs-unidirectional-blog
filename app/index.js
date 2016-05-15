@@ -1,7 +1,8 @@
 import ReactDOM from 'react-dom';
 import content from './content';
 import {RootView$} from './core/views/root-view';
-import {navigateTo, RouterStates} from './core/router';
+import {navigateTo} from './core/router';
+import {RouterStates} from './core/router-view';
 
 document.body.appendChild(content());
 

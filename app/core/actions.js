@@ -1,5 +1,6 @@
 export const Actions = {
   InitializeApp: 'InitializeApp',
   GetPosts: 'GetPosts',
-  RequestError: 'RequestError'
+  RequestError: 'RequestError',
+  SendMessage: 'SendMessage'
 };

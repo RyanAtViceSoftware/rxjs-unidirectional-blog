@@ -1,20 +1,18 @@
 import Rx from 'rx-dom';
 import React from 'react';
-import {Stores$} from '../stores/rootStore';
+import {Stores$} from '../stores/root-store';
 import {Actions} from '../actions';
 import {Messages} from '../messages';
 import {send} from '../../infrastructure/dispatcher';
+import {RouterMessages, RouterStates} from '../router-view';
 
 const PostUpdated$ = Stores$
-  .do(x => console.log(x))
   .filter(x => x.type === Messages.PostsUpdated)
   .map(postsToList)
   .shareReplay(1);
 
-const ShowPosts$ = Stores$
-  .do(x => console.log('showposts', x))
-  .filter(x => x.type === Actions.ShowPosts)
-  .do(x => send(Actions.GetPosts))
+const ShowBusy$ = Stores$
+  .filter(x => x.type === Messages.PostsIsBusy)
   .map(mapToEmptyList)
   .shareReplay(1);
 
@@ -31,7 +29,8 @@ function postsToList({data}) {
 };
 
 function mapToEmptyList() {
-  return <div>No posts</div>;
+  return <div>Loading...</div>;
 }
 
-export const PostsView$ = Rx.Observable.merge(PostUpdated$, ShowPosts$);
+export const PostsView$ 
+  = Rx.Observable.merge(PostUpdated$, ShowBusy$);
