@@ -1,6 +1,6 @@
 import Rx from 'rx-dom';
 import {Actions} from './actions';
-import {Dispatcher, toAction, send} from '../infrastructure/dispatcher';
+import {Dispatcher, toMessage, send} from '../infrastructure/dispatcher';
 import {PostsView$} from './views/posts-view';
 
 const RouterActions = {
@@ -27,7 +27,7 @@ const Posts$ = NavigateTo$
 	.filter(state => state === RouterStates.Default ||
   		state === RouterStates.Posts)
 	.do(x => send(Actions.GetPosts))
-	.map(toAction(Actions.ShowView, PostsView$))
+	.map(toMessage(Actions.ShowView, PostsView$))
 	.shareReplay(1);
 
 export const Router$ = Rx.Observable.merge(Posts$);

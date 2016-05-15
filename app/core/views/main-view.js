@@ -7,7 +7,7 @@ import {Actions} from '../actions';
 
 export const MainView$ = Router$
 	.do(x => console.log(x))
-	.filter(x => x.action === Actions.ShowView)
+	.filter(x => x.type === Actions.ShowView)
 	.do(x => console.log(x))
 	.flatMap(mapToView)
 	.map(view => <div><h1>Hi</h1>{view}</div>)
