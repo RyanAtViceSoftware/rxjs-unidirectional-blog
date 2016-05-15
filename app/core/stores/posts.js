@@ -1,5 +1,6 @@
 import Rx from 'rx-dom';
 import {Dispatcher, toMessage} from '../../infrastructure/dispatcher';
+import {Messages} from './../messages';
 import {Actions} from './../actions';
 import {send} from '../../infrastructure/dispatcher';
 
@@ -13,5 +14,5 @@ export const Posts$ = Dispatcher
     		{ displayMessage: 'Error getting posts', error: error}
 		)
 	)
-    .map(users => toMessage(Actions.PostsUpdated, users))
+    .map(users => toMessage(Messages.PostsUpdated, users))
     .shareReplay(1);

@@ -2,12 +2,13 @@ import Rx from 'rx-dom';
 import React from 'react';
 import {Router$} from '../router';
 import {send} from '../../infrastructure/dispatcher';
-import {Actions} from '../actions';
+import {Messages} from '../messages';
 
+console.log('mainview');
 
 export const MainView$ = Router$
-	.do(x => console.log(x))
-	.filter(x => x.type === Actions.ShowView)
+	.do(x => console.log('MainView', x))
+	.filter(x => x.type === Messages.ShowView)
 	.do(x => console.log(x))
 	.flatMap(mapToView)
 	.map(view => <div><h1>Hi</h1>{view}</div>)
@@ -16,5 +17,3 @@ export const MainView$ = Router$
 function mapToView(x) {
 	return x.data;
 }
-
-  

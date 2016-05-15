@@ -2,11 +2,12 @@ import Rx from 'rx-dom';
 import React from 'react';
 import {Stores$} from '../stores/rootStore';
 import {Actions} from '../actions';
+import {Messages} from '../messages';
 import {send} from '../../infrastructure/dispatcher';
 
 const PostUpdated$ = Stores$
   .do(x => console.log(x))
-  .filter(x => x.type === Actions.PostsUpdated)
+  .filter(x => x.type === Messages.PostsUpdated)
   .map(postsToList)
   .shareReplay(1);
 
