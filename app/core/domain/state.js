@@ -1,7 +1,5 @@
 import Rx from 'rx-dom';
 import {Posts$} from './posts';
+import initialState from './initial-state';
 
-const intialState = {isBusy: true};
-
-export const State$ = Rx.Observable.merge(Posts$)
-  .startWith({ isBusy: true, foo: 'bar'});
+export const State$ = Rx.Observable.merge(Posts$);
