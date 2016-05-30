@@ -1,7 +1,5 @@
-import Rx from 'rx-dom';
 import React from 'react';
-import {Stores$} from '../stores/rootStore';
-import {Actions} from '../actions';
+import {State$} from '../domain/state';
 
 var postRow = function(post) { 
   return (
@@ -9,13 +7,16 @@ var postRow = function(post) {
   );
 };
 
-var postsToList = function({data}) {
+var postsToList = function({posts}) {
   return (
-    <ul>{data.map(postRow)}</ul>
+    <ul>{posts.map(postRow)}</ul>
   );
 };
 
-export const PostsView$ = Stores$
-    .filter(x => x.action === Actions.PostsUpdated)
-    .map(postsToList)
-    .shareReplay(1);
+export const PostsView$ = State$
+    .filter(hasPosts)
+    .map(postsToList);
+
+function hasPosts(state) {
+	return !state.isBusy && state.posts;
+}
