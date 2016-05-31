@@ -7,7 +7,9 @@ import {NavigateTo} from './core/router';
 document.body.appendChild(content());
 
 RootView$.subscribe(function(state) {
-  ReactDOM.render(state, document.querySelector('#content'));
+	console.log('test');
+	console.log('subscribe: ', state);
+  	ReactDOM.render(state, document.querySelector('#content'));
 });
 
 NavigateTo.posts();

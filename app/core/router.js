@@ -2,6 +2,7 @@ import React from 'react';
 import {PostActions} from './domain/posts';
 import {PostsView$} from './views/posts-view';
 import {State$} from './domain/state';
+import initialState from './domain/initial-state';
 
 const ShowPostsAction$ = new Rx.Subject();
 
@@ -16,8 +17,8 @@ function mapShowPosts(state) {
 }
 
 const RouterState$ = Rx.Observable.merge(State$, ShowPostsHandler$)
-  .do(x => console.log('State$', x))
-  .startWith({route: 'none'});
+	.startWith(initialState)
+	.do(x => console.log('State$', x));
 
 export const NavigateTo = {
 	posts: function () {
