@@ -10,15 +10,23 @@ const ShowPostsHandler$ = ShowPostsAction$
 	.do(x => console.log('showPostsactions', x))
 	.map(mapShowPosts);
 
-function mapShowPosts(state) {
-	return Object.assign({}, state, {
-		route: 'posts'
-	})
+function mapShowPosts() {
+	return function(state) {
+		return Object.assign({}, state, {
+			route: 'posts'
+		});
+	};
 }
 
-const RouterState$ = Rx.Observable.merge(State$, ShowPostsHandler$)
+const RouterState$ = Rx.Observable
+	.merge(State$, ShowPostsHandler$)
 	.startWith(initialState)
-	.do(x => console.log('State$', x));
+	.do(x => console.log('RouterState$', x))
+	.scan(function (state, project) {
+		console.log('state, project', state, project);
+		return project(state);
+	})
+	.do(x => console.log('scan', x))
 
 export const NavigateTo = {
 	posts: function () {
