@@ -64,7 +64,7 @@ switch(process.env.npm_lifecycle_event) {
     config = merge(
       common,
       {
-        devtool: 'eval'
+        devtool: 'source-map'
       },
       parts.devServer({
         // Customize host/port here if needed

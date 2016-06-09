@@ -4,16 +4,24 @@ import Rx from 'rx-dom';
 const GetPostsAction$ = new Rx.Subject();
 
 const GetPostsHandler$ = GetPostsAction$
-	.flatMap(getPosts, mapPosts)
+	.do(x => console.log('GetPostsHandler$: ', x))
+	.flatMap(getPosts)
+	.catch(err => Rx.Observable.just('GetPostsHandler$ error: ' + error))
+	.do(x => console.log('GetPostsHandler$: after flatMap', x))
+	.map(mapPosts)
+	.do(x => console.log('GetPostsHandler$ after: ', x))
 	.shareReplay(1); // Prevent's multiple calls
 
 function getPosts() {
+	console.log('getPosts()');
 	return Rx.DOM.getJSON(
-		'http://jsonplaceholder.typicode.com/posts');
+		'http://jsonplaceholder.typicode.com/posts')
+		.catch(err => Rx.Observable.just('getPosts() error: ' + error)) ;
 }
 
 function mapPosts(response) {
 	return function(response, state) {
+		console.log('mapPosts : ', response);
 		return Object.assign({}, state, {
 			posts: response,
 			isBusy: false
@@ -21,27 +29,17 @@ function mapPosts(response) {
 	}.bind(null, response);
 }
 
-// PostsIsBusy$
-const PostsIsBusy$ = Rx.Observable.merge(GetPostsAction$)
-	.map(mapPostsBusy);
-
-function mapPostsBusy() {
-	return function(state) {
-		return Object.assign({}, state, {
-			isBusy: true
-		});
-	};
-}
-
 // Posts Actions
 export const PostActions = {
 	getPosts: function() {
-		GetPostsAction$.onNext()
+		console.log('PostActions$.getPosts()');
+		GetPostsAction$.onNext();
 	}
 }
 
 // Post Action Handlers
 export const Posts$ = Rx.Observable
-	.merge(GetPostsHandler$, PostsIsBusy$);
+	.merge(GetPostsHandler$);
 
+Posts$.subscribe(x => console.log('=>Posts$', x));
 

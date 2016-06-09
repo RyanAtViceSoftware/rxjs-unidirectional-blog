@@ -14,9 +14,10 @@ var postsToList = function({posts}) {
 };
 
 export const PostsView$ = State$
+	.do(x => console.log('PostsView$ before:', x))
     .filter(hasPosts)
     .map(postsToList);
 
 function hasPosts(state) {
-	return !state.isBusy && state.posts;
+	return state.posts;
 }
