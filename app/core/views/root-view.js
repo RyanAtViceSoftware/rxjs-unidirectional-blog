@@ -4,4 +4,4 @@ import {PostsView$} from './posts-view';
 
 
 export const RootView$ 
-	= Rx.Observable.merge(MainView$, PostsView$);
+	= Rx.Observable.merge(MainView$);

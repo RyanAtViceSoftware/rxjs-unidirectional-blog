@@ -4,7 +4,7 @@ import {RouterState$} from './router';
 import initialState from './initial-state';
 
 export const State$ = Rx.Observable.merge(Posts$, RouterState$)
-	.startWith(initialState)
+	.startWith(getInitialState())
 	.do(x => console.log('State$', x))
 	.scan(function (state, project) {
 		console.log('state, project', state, project);
@@ -13,4 +13,9 @@ export const State$ = Rx.Observable.merge(Posts$, RouterState$)
 	.do(x => {
 		console.log('scan', x);
 		return x;
-	});;
+	});
+
+function getInitialState() {
+	console.log('getInitialState()');
+	return initialState;
+}
