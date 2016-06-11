@@ -3,7 +3,6 @@ import React from 'react';
 const ShowPostsAction$ = new Rx.Subject();
 
 const ShowPostsHandler$ = ShowPostsAction$
-	.do(x => console.log('showPostsactions', x))
 	.map(mapShowPosts);
 
 function mapShowPosts() {

@@ -3,21 +3,17 @@ import content from './content';
 import Rx from 'rx-dom';
 import {MainView$} from './core/views/main-view';
 import {NavigateTo} from './core/domain/router';
+import {PostActions} from './core/domain/posts';
 
 document.body.appendChild(content());
 
 MainView$.subscribe(
 	function(view) {
-		console.log('test');
-		console.log('subscribe: ', view);
 		ReactDOM.render(view, document.querySelector('#content'));
-		console.log('render sucess');
 	}, 
 	function(error) {
 		console.error('MainView$ error:', error);
 	}, 
 	function() {
-		console.log('MainView$ complete');
+		console.debug('MainView$ complete');
 	});
-
-MainView$.subscribe(() => console.log('=>State$'));
