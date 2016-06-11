@@ -40,6 +40,3 @@ export const PostActions = {
 // Post Action Handlers
 export const Posts$ = Rx.Observable
 	.merge(GetPostsHandler$);
-
-Posts$.subscribe(x => console.log('=>Posts$', x));
-

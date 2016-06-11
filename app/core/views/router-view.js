@@ -3,7 +3,7 @@ import {PostActions} from '../domain/posts';
 import {State$} from '../domain/state';
 import {PostsView$} from './posts-view';
 
-const busyView = <span>Loading...</span>;
+const busyView = () => <span>Loading...</span>;
 
 const PostsRouteInit$ = State$
 	.do(x => console.log('PostsRouteInit$ before: ', x))
