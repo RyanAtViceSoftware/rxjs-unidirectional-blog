@@ -1,9 +1,16 @@
 import Rx from 'rx-dom';
+import {bus$} from '../../infrastructure/bus';
 
 // GetPosts
-const SetIsBusyAction$ = new Rx.Subject();
+export const postMessages = {
+	setIsBusy: 'setIsBusy',
+	getPosts: 'getPosts'
+}
 
-const SetIsBusyHandler$ = SetIsBusyAction$
+const SetIsBusy$ = bus$
+	.do(x => console.log('SetIsBusy$', x))
+	.filter(x => x.message === postMessages.setIsBusy)
+	.do(x => console.log('SetIsBusy$ filter', x))
 	.map(mapIsBusy)
 	.shareReplay(1);
 
@@ -14,10 +21,10 @@ function mapIsBusy() {
 		});
 	}
 }  
-
-const GetPostsAction$ = new Rx.Subject();
-
-const GetPostsHandler$ = GetPostsAction$
+const GetPosts$ = bus$
+	.do(x => console.log('GetPosts$', x))
+	.filter(x => x.message === postMessages.setIsBusy)
+	.do(x => console.log('GetPosts$ filter', x))
 	.flatMap(getPosts)
 	.map(mapPosts)
 	.shareReplay(1); // Prevent's multiple calls by buffering one call to share for all subscribers
@@ -53,16 +60,5 @@ function mapPosts(response) {
 	}.bind(null, response);
 }
 
-// Posts Actions
-export const PostActions = {
-	getPosts: function() {
-		GetPostsAction$.onNext();
-	},
-	setIsBusy: function() {
-		SetIsBusyAction$.onNext();
-	}
-}
-
-// Post Action Handlers
-export const Posts$ = Rx.Observable
-	.merge(GetPostsHandler$, SetIsBusyHandler$);
+export const Posts$ 
+	= Rx.Observable.merge(GetPosts$, SetIsBusy$);

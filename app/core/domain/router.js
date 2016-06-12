@@ -1,8 +1,12 @@
 import React from 'react';
+import {bus$} from '../../infrastructure/bus';
 
-const ShowPostsAction$ = new Rx.Subject();
+export const routerMessages = {
+	showPosts: 'showPosts'
+}
 
-const ShowPostsHandler$ = ShowPostsAction$
+export const ShowPostsHandler$ = bus$
+	.filter(x => x.message === routerMessages.showPosts)
 	.map(mapShowPosts);
 
 function mapShowPosts() {
@@ -13,27 +17,5 @@ function mapShowPosts() {
 	};
 }
 
-const ShowBusyAction$ = new Rx.Subject();
-
-const ShowBusyHandler$ = ShowBusyAction$
-	.map(mapShowBusy);
-
-function mapShowBusy() {
-	return function(state) {
-		return Object.assign({}, state, {
-			isBusy: true
-		});
-	};
-}
-
 export const RouterState$ = Rx.Observable
-	.merge(ShowPostsHandler$, ShowBusyHandler$);
-
-export const NavigateTo = {
-	posts: function () {
-		ShowPostsAction$.onNext();
-	},
-	busy: function() {
-		ShowBusyAction$.onNext();
-	}
-}
+	.merge(ShowPostsHandler$);
