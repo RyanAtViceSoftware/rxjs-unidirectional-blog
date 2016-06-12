@@ -2,18 +2,17 @@ import React from 'react';
 import {PostActions} from '../domain/posts';
 import {State$} from '../domain/state';
 import {PostsView$} from './posts-view';
+import {NavigateTo} from '../domain/router';
 
 const busyView$ = State$
-	.filter(state => 
-			(state.route === 'posts' || state.route === '/') 
-			&& !state.posts
-		)
+	.filter(state => state.isBusy)
 	.map(() => <span>Loading...</span>);
 
 const PostsRouteInit$ = State$
 	.distinctUntilChanged(state => state.route)
 	.filter(state => state.route === 'posts' || state.route === '/')
-	.do(() => PostActions.getPosts())	
+	.do(() => PostActions.setIsBusy())
+	.do(() => PostActions.getPosts())
 	.switchMap(busyView$);
 
 const PostsRouteShowView$ = State$
@@ -26,6 +25,14 @@ const PostsRoute$
 			PostsRouteInit$, 
 			busyView$
 		);
+
+function isBusy(state) {
+	return function(state) {
+		return Object.assign({}, state, {
+			isBusy: true
+		});
+	}
+}
 
 export const Router$ 
 	= Rx.Observable.merge(PostsRoute$);

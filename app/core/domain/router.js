@@ -13,11 +13,27 @@ function mapShowPosts() {
 	};
 }
 
+const ShowBusyAction$ = new Rx.Subject();
+
+const ShowBusyHandler$ = ShowBusyAction$
+	.map(mapShowBusy);
+
+function mapShowBusy() {
+	return function(state) {
+		return Object.assign({}, state, {
+			isBusy: true
+		});
+	};
+}
+
 export const RouterState$ = Rx.Observable
-	.merge(ShowPostsHandler$);
+	.merge(ShowPostsHandler$, ShowBusyHandler$);
 
 export const NavigateTo = {
 	posts: function () {
 		ShowPostsAction$.onNext();
+	},
+	busy: function() {
+		ShowBusyAction$.onNext();
 	}
 }

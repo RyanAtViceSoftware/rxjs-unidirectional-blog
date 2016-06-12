@@ -1,3 +1,4 @@
 { 
-	"route": "/" 
+	"route": "/",
+	"isBusy": false
 }

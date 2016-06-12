@@ -1,6 +1,20 @@
 import Rx from 'rx-dom';
 
 // GetPosts
+const SetIsBusyAction$ = new Rx.Subject();
+
+const SetIsBusyHandler$ = SetIsBusyAction$
+	.map(mapIsBusy)
+	.shareReplay(1);
+
+function mapIsBusy() {
+	return function(response, state) {
+		return Object.assign({}, state, {
+			isBusy: true
+		});
+	}
+}  
+
 const GetPostsAction$ = new Rx.Subject();
 
 const GetPostsHandler$ = GetPostsAction$
@@ -11,7 +25,7 @@ const GetPostsHandler$ = GetPostsAction$
 function getPosts() {
 	return Rx.DOM.getJSON(
 		'http://jsonplaceholder.typicode.com/posts');
-	
+		
 	// Uncomment this and comment the code above to run on stubbed data
 	// return Rx.Observable.just(
 	// 	[
@@ -43,9 +57,12 @@ function mapPosts(response) {
 export const PostActions = {
 	getPosts: function() {
 		GetPostsAction$.onNext();
+	},
+	setIsBusy: function() {
+		SetIsBusyAction$.onNext();
 	}
 }
 
 // Post Action Handlers
 export const Posts$ = Rx.Observable
-	.merge(GetPostsHandler$);
+	.merge(GetPostsHandler$, SetIsBusyHandler$);
