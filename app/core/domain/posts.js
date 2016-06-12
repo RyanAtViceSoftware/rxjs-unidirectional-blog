@@ -1,30 +1,14 @@
 import Rx from 'rx-dom';
 import {bus$} from '../../infrastructure/bus';
+import {routerMessages} from './router';
 
 // GetPosts
 export const postMessages = {
-	setIsBusy: 'setIsBusy',
 	getPosts: 'getPosts'
 }
 
-const SetIsBusy$ = bus$
-	.do(x => console.log('SetIsBusy$', x))
-	.filter(x => x.message === postMessages.setIsBusy)
-	.do(x => console.log('SetIsBusy$ filter', x))
-	.map(mapIsBusy)
-	.shareReplay(1);
-
-function mapIsBusy() {
-	return function(response, state) {
-		return Object.assign({}, state, {
-			isBusy: true
-		});
-	}
-}  
 const GetPosts$ = bus$
-	.do(x => console.log('GetPosts$', x))
-	.filter(x => x.message === postMessages.setIsBusy)
-	.do(x => console.log('GetPosts$ filter', x))
+	.filter(x => x.message === postMessages.getPosts)
 	.flatMap(getPosts)
 	.map(mapPosts)
 	.shareReplay(1); // Prevent's multiple calls by buffering one call to share for all subscribers
@@ -61,4 +45,4 @@ function mapPosts(response) {
 }
 
 export const Posts$ 
-	= Rx.Observable.merge(GetPosts$, SetIsBusy$);
+	= Rx.Observable.merge(GetPosts$);
