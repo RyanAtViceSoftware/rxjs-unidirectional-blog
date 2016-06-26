@@ -1,5 +1,6 @@
 import React from 'react';
 import {postMessages} from '../domain/posts';
+import {routerMessages} from '../domain/router';
 import {State$} from '../domain/state';
 import {PostsView$} from './posts-view';
 import {NavigateTo} from '../domain/router';
@@ -13,12 +14,13 @@ const PostsRouteInit$ = State$
 	.distinctUntilChanged(state => state.route)
 	.filter(state => state.route === 'posts' || state.route === '/')
 	.do(x => console.log('PostsRouteInit', x))
-	.do(() => send(postMessages.setIsBusy))
+	.do(() => send(routerMessages.setIsBusy))
 	.do(() => send(postMessages.getPosts))
 	.switchMap(busyView$);
 
 const PostsRouteShowView$ = State$
 	.filter(state => state.route === 'posts' || state.route === '/')
+	.do(x => console.log('PostsRouteShowView', x))
  	.switchMap(PostsView$);
 
 const PostsRoute$ 
