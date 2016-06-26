@@ -8,4 +8,4 @@ export const State$ = Rx.Observable.merge(Posts$, RouterState$)
 	.scan(function (state, project) {
 		return project(state);
 	})
-	.do(x => console.log('State$:', x));
+	.do(x => console.debug('State$:', x));
