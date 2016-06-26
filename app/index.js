@@ -1,9 +1,6 @@
 import ReactDOM from 'react-dom';
 import content from './content';
-import Rx from 'rx-dom';
 import {MainView$} from './core/views/main-view';
-import {NavigateTo} from './core/domain/router';
-import {PostActions} from './core/domain/posts';
 
 document.body.appendChild(content());
 

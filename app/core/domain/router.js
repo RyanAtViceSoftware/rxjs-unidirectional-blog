@@ -1,35 +1,22 @@
 import React from 'react';
-import {bus$} from '../../infrastructure/bus';
+import {dispatcher$} from '../../infrastructure/dispatcher';
 
-export const routerMessages = {
-	setIsBusy: 'setIsBusy',
-	showPosts: 'showPosts'
+export const routerActions = {
+	setIsBusy: 'setIsBusy'
 }
 
-export const ShowPosts$ = bus$
-	.filter(x => x.message === routerMessages.showPosts)
-	.map(mapShowPosts);
-
-function mapShowPosts() {
-	return function(state) {
-		return Object.assign({}, state, {
-			route: 'posts'
-		});
-	};
-}
-
-const SetIsBusy$ = bus$
-	.filter(x => x.message === routerMessages.setIsBusy)
+const SetIsBusy$ = dispatcher$
+	.filter(x => x.action === routerActions.setIsBusy)
 	.map(mapIsBusy)
 	.shareReplay(1);
 
-function mapIsBusy() {
-	return function(response, state) {
-		return Object.assign({}, state, {
+function mapIsBusy(dispatcherAction) {
+	return function(state) {
+		return Object.assign({}, state, dispatcherAction, {
 			isBusy: true
 		});
 	}
 }
 
-export const RouterState$ = Rx.Observable
-	.merge(ShowPosts$, SetIsBusy$);
+export const RouterState$ 
+	= Rx.Observable.merge(SetIsBusy$);

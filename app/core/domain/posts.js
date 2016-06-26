@@ -1,14 +1,15 @@
 import Rx from 'rx-dom';
-import {bus$} from '../../infrastructure/bus';
-import {routerMessages} from './router';
+import {dispatcher$} from '../../infrastructure/dispatcher';
+import {routerActions} from './router';
 
 // GetPosts
-export const postMessages = {
-	getPosts: 'getPosts'
+export const postsActions = {
+	getPosts: 'getPosts',
+	postsUpdated: 'postsUpdated'
 }
 
-const GetPosts$ = bus$
-	.filter(x => x.message === postMessages.getPosts)
+const GetPosts$ = dispatcher$
+	.filter(x => x.action === postsActions.getPosts)
 	.flatMap(getPosts)
 	.map(mapPosts)
 	.shareReplay(1); // Prevent's multiple calls by buffering one call to share for all subscribers
@@ -39,7 +40,8 @@ function mapPosts(response) {
 	return function(response, state) {
 		return Object.assign({}, state, {
 			posts: response,
-			isBusy: false
+			isBusy: false,
+			action: postsActions.postsUpdated
 		});
 	}.bind(null, response);
 }

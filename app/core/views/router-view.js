@@ -1,10 +1,10 @@
 import React from 'react';
-import {postMessages} from '../domain/posts';
-import {routerMessages} from '../domain/router';
+import {postsActions} from '../domain/posts';
+import {routerActions} from '../domain/router';
 import {State$} from '../domain/state';
 import {PostsView$} from './posts-view';
 import {NavigateTo} from '../domain/router';
-import {send} from '../../infrastructure/bus';
+import {send} from '../../infrastructure/dispatcher';
 
 const busyView$ = State$
 	.filter(state => state.isBusy)
@@ -13,14 +13,15 @@ const busyView$ = State$
 const PostsRouteInit$ = State$
 	.distinctUntilChanged(state => state.route)
 	.filter(state => state.route === 'posts' || state.route === '/')
-	.do(x => console.log('PostsRouteInit', x))
-	.do(() => send(routerMessages.setIsBusy))
-	.do(() => send(postMessages.getPosts))
+	.do(() => send(routerActions.setIsBusy))
+	.do(() => send(postsActions.getPosts))
 	.switchMap(busyView$);
 
 const PostsRouteShowView$ = State$
-	.filter(state => state.route === 'posts' || state.route === '/')
-	.do(x => console.log('PostsRouteShowView', x))
+	.filter(state => 
+		(state.route === 'posts' || state.route === '/') 
+		&& !state.isBusy 
+		&& state.action === postsActions.postsUpdated)
  	.switchMap(PostsView$);
 
 const PostsRoute$ 
