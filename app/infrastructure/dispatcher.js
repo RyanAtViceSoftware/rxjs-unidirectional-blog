@@ -1,6 +1,6 @@
 import Rx from 'rx-dom';
 
-export const dispatcher$ = new Rx.ReplaySubject(1);
+export const dispatcher$ = new Rx.Subject();
 
 dispatcher$.subscribe(x => console.log('bus:', x));
 
