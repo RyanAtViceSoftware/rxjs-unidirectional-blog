@@ -6,6 +6,21 @@ Sample code showing how to build a blog using RxJs to implement unidirectional d
 2. ```npm start```
 3. Open ```http://localhost:8080/``` in a browser
 
+# How the App Works
+The app is a simple blog application that feteches all the posts from http://jsonplaceholder.typicode.com/posts which is a testing API. At this time the site features:
+
+1. Async call and busy indicator
+    1. The site will call the ```/posts``` endpoint and while waiting for a response will display "Loading..." to the user as shown below.
+
+        ![image](https://cloud.githubusercontent.com/assets/10080111/16415888/26c29a66-3d05-11e6-9e06-0e434dfae0b8.png)
+
+    2. Once the API returns the site will show a list of post titles as shown below.
+    
+        ![image](https://cloud.githubusercontent.com/assets/10080111/16416075/0f92d2b0-3d06-11e6-8560-58d7ee55577f.png)
+
+2. Router with Default Route
+   1. I began to explore how routing would work by implementing a default route. 
+
 # Approach
 I'm exploring implementing one way data flows with Functional Reactive Programming libraries and here I'm using RxJs. It's very easy to implement messaging patterns (actions and dispatcher) in RxJs. An added benifit of using RxJs is that it's also very easy to implement immutable application state and mutators (Redux style approach).
 
@@ -100,3 +115,13 @@ MainView$.subscribe(
 		console.debug('MainView$ complete');
 	});
 ```
+
+# What's Next?
+OK, so that's cool, we have shown how to do an async call but what all do we need to demonstrate before we could provide a useful starting point. Based on my experience I think we need to demonstrate the items that follow. After that I'd feel confident in taking on a project using this approach.
+
+1. Explore routing more
+2. Explore error handling
+3. Adding interactivity
+4. Forms
+5. Validations
+6. Tests
