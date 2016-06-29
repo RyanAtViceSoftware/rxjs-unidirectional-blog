@@ -119,9 +119,11 @@ MainView$.subscribe(
 # What's Next?
 OK, so that's cool, we have shown how to do an async call but what all do we need to demonstrate before we could provide a useful starting point. Based on my experience I think we need to demonstrate the items that follow. After that I'd feel confident in taking on a project using this approach.
 
+1. Explore using .startWith() for each store to provide initial state (ala Redux)
+1. Explore stream lifetime management - how to make streams unsubscribe
 1. Explore routing more
-2. Explore error handling
-3. Adding interactivity
-4. Forms
-5. Validations
-6. Tests
+1. Explore error handling
+1. Adding interactivity
+1. Forms
+1. Validations
+1. Tests
